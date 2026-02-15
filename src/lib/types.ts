@@ -106,6 +106,12 @@ export interface NewGameConfig {
   rightPlayerIds: string[];
   bestOf: 0 | 3 | 5;
   durationMinutes: number | null;
+  /** All selected player IDs when 5+ players — enables rotation between games */
+  allSelectedPlayerIds?: string[];
+  /** Initial rotation index for the sit-out rotation (syncs modal display with rotation logic) */
+  initialRotation?: number;
+  /** Start the game with isLastSet=true so it auto-ends after 1 set (rotation mode) */
+  isLastSet?: boolean;
 }
 
 // ─── Player Analytics ────────────────────────────────────────────────────────
@@ -128,4 +134,62 @@ export interface PlayerStats {
   opponentRecord: Record<string, { played: number; won: number }>;
   /** Recent form: last 5 results as W/L/D */
   recentForm: ("W" | "L" | "D")[];
+}
+
+// ─── Rotation Session (5+ Player Rotation) ──────────────────────────────────
+
+export interface RotationSession {
+  /** All player IDs in the rotation pool */
+  playerIds: string[];
+  /** Current rotation index — determines who sits out */
+  rotation: number;
+  /** Game format carried from the original game config */
+  bestOf: 0 | 3 | 5;
+  /** Duration in minutes (free play) */
+  durationMinutes: number | null;
+}
+
+// ─── Tournament (Round-Robin) ────────────────────────────────────────────────
+
+export interface TournamentMatch {
+  /** Index within the tournament (0-based) */
+  index: number;
+  /** Player IDs for left team */
+  leftPlayerIds: [string, string];
+  /** Player IDs for right team */
+  rightPlayerIds: [string, string];
+  /** Player IDs sitting out this match (empty for 4-player format) */
+  sittingOutIds: string[];
+  /** Winner side or null if not yet played */
+  winner: TeamSide | null;
+  /** Set scores from the completed game */
+  sets: SetScore[];
+  /** Match summary ID (links to match history) */
+  matchId: string | null;
+}
+
+export interface TournamentStanding {
+  playerId: string;
+  playerName: string;
+  played: number;
+  won: number;
+  lost: number;
+  /** Is this player one of the bottom losers who pays the penalty */
+  isPenalised: boolean;
+}
+
+export interface Tournament {
+  id: string;
+  /** The player IDs in this tournament (4+) */
+  playerIds: string[];
+  /** All round-robin matches */
+  matches: TournamentMatch[];
+  /** The penalty/fine the bottom 2 losers must pay */
+  penalty: string;
+  /** Current match index, or matches.length if completed */
+  currentMatchIndex: number;
+  /** Timestamp when tournament was created */
+  createdAt: number;
+  /** Timestamp when tournament was completed (all matches played) */
+  completedAt: number | null;
 }

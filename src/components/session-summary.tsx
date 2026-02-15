@@ -8,9 +8,18 @@ interface SessionSummaryProps {
   game: GameState;
   stats: SessionStats;
   onDismiss: () => void;
+  /** Rotation session info (5+ player free play) */
+  rotationSession?: {
+    gameNumber: number;
+    totalPlayers: number;
+    currentSittingOut: string[];
+    sittingOutNext: string[];
+  };
+  /** End the rotation session early */
+  onEndRotation?: () => void;
 }
 
-export function SessionSummary({ game, stats, onDismiss }: SessionSummaryProps) {
+export function SessionSummary({ game, stats, onDismiss, rotationSession, onEndRotation }: SessionSummaryProps) {
   const winner = stats.sessionWinner;
   const isDraw = !winner && stats.setsWon.left === stats.setsWon.right;
 
@@ -147,13 +156,46 @@ export function SessionSummary({ game, stats, onDismiss }: SessionSummaryProps) 
         </div>
       )}
 
-      {/* Done button */}
-      <button
-        onClick={onDismiss}
-        className="mt-8 mb-6 w-full rounded-xl bg-gradient-to-r from-blue-600 to-red-600 px-6 min-h-[52px] text-base sm:text-lg font-bold text-white shadow-lg transition-all active:scale-[0.98]"
-      >
-        Done
-      </button>
+      {/* Action buttons */}
+      {rotationSession ? (
+        <div className="mt-8 mb-6 space-y-3">
+          {/* Current game info */}
+          <div className="rounded-2xl bg-white/[0.04] px-4 py-3 text-center space-y-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
+              Rotation · {rotationSession.totalPlayers} Players
+            </p>
+            {rotationSession.currentSittingOut.length > 0 && (
+              <p className="text-[11px] text-white/40">
+                🪑 Sat out this game: <span className="font-semibold text-white/60">{rotationSession.currentSittingOut.join(", ")}</span>
+              </p>
+            )}
+            <div className="border-t border-white/5 pt-2">
+              <p className="text-[11px] text-violet-300/80">
+                🔄 Next up to sit: <span className="font-bold text-violet-300">{rotationSession.sittingOutNext.join(", ")}</span>
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onDismiss}
+            className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 min-h-[52px] text-base sm:text-lg font-bold text-white shadow-lg shadow-blue-600/25 transition-all active:scale-[0.98]"
+          >
+            Next Match ▶
+          </button>
+          <button
+            onClick={onEndRotation}
+            className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-6 min-h-[44px] text-sm font-semibold text-white/50 transition-all active:scale-[0.98] active:bg-white/8"
+          >
+            End Session
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={onDismiss}
+          className="mt-8 mb-6 w-full rounded-xl bg-gradient-to-r from-blue-600 to-red-600 px-6 min-h-[52px] text-base sm:text-lg font-bold text-white shadow-lg transition-all active:scale-[0.98]"
+        >
+          Done
+        </button>
+      )}
       </div>
     </div>
   );

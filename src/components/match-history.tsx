@@ -14,16 +14,19 @@ export function MatchHistory({ matches, players, onClearHistory, onNewGame }: Ma
   if (matches.length === 0) return null;
 
   return (
-    <div className="border-t border-white/10 px-3 sm:px-4 pb-6 pt-3 sm:pt-4">
-      <div className="mb-2 sm:mb-3 flex items-center justify-between">
-        <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/50">
-          Recent Matches
-        </h2>
+    <div className="px-4 sm:px-6 pb-6 pt-2 max-w-md mx-auto">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2 flex-1">
+          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-white/35">
+            Recent Matches
+          </span>
+          <div className="flex-1 h-px bg-white/8" />
+        </div>
         <button
           onClick={onClearHistory}
-          className="text-[11px] sm:text-xs text-white/30 active:text-white/60 transition-colors min-h-[36px] flex items-center"
+          className="text-[11px] text-white/25 active:text-white/50 transition-colors ml-3 min-h-[36px] flex items-center"
         >
-          Clear all
+          Clear
         </button>
       </div>
 
@@ -32,15 +35,6 @@ export function MatchHistory({ matches, players, onClearHistory, onNewGame }: Ma
           <MatchCard key={match.id} match={match} players={players} />
         ))}
       </div>
-
-      {matches.length > 0 && (
-        <button
-          onClick={onNewGame}
-          className="mt-3 sm:mt-4 w-full rounded-xl bg-white/5 min-h-[44px] text-[13px] sm:text-sm font-medium text-white/60 active:bg-white/10 transition-all"
-        >
-          + Start New Match
-        </button>
-      )}
     </div>
   );
 }
@@ -65,7 +59,7 @@ function MatchCard({ match, players }: { match: MatchSummary; players: Player[] 
   const rightPlayerNames = getPlayerNames("right");
 
   return (
-    <div className="rounded-xl bg-white/5 p-2.5 sm:p-3">
+    <div className="rounded-2xl bg-white/[0.04] p-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3 text-[13px] sm:text-sm min-w-0">
           <TeamLabel

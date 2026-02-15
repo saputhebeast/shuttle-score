@@ -105,7 +105,6 @@ export function scorePoint(state: GameState, team: TeamSide): GameState {
 
   // In free play with isLastSet, treat this set ending as match end
   const isFreePlayLastSetDone = state.bestOf === 0 && state.isLastSet && setWinner;
-  const effectiveMatchWinner = matchWinner || (isFreePlayLastSetDone ? null : null);
 
   // If set was won but match isn't over, prepare next set
   let newCurrentSet = state.currentSet;

@@ -25,10 +25,13 @@ export function PlayerAnalytics({ players, matches }: PlayerAnalyticsProps) {
   if (players.length === 0) return null;
 
   return (
-    <div className="border-t border-white/10 px-3 sm:px-4 pb-4 pt-3 sm:pt-4">
-      <h2 className="mb-3 text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/50">
-        Player Stats
-      </h2>
+    <div className="px-4 sm:px-6 pb-4 pt-2 max-w-md mx-auto">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-white/35">
+          Player Stats
+        </span>
+        <div className="flex-1 h-px bg-white/8" />
+      </div>
 
       {!hasData ? (
         <p className="text-xs text-white/30 text-center py-3">
@@ -99,7 +102,7 @@ function PlayerRow({
   const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
 
   return (
-    <div className="rounded-xl bg-white/5 overflow-hidden">
+    <div className="rounded-2xl bg-white/[0.04] overflow-hidden">
       {/* Summary row */}
       <button
         onClick={onToggle}

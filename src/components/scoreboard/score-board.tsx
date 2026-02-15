@@ -15,6 +15,12 @@ interface ScoreBoardProps {
   onUndo: () => void;
   onReset: () => void;
   onMarkLastSet: () => void;
+  /** Rotation session info — who's sitting out */
+  rotationInfo?: {
+    gameNumber: number;
+    totalPlayers: number;
+    sittingOut: string[];
+  };
 }
 
 export function ScoreBoard({
@@ -26,6 +32,7 @@ export function ScoreBoard({
   onUndo,
   onReset,
   onMarkLastSet,
+  rotationInfo,
 }: ScoreBoardProps) {
   const currentSet = game.sets[game.currentSet];
   const setsWon = getSetsWon(game.sets);
@@ -33,10 +40,18 @@ export function ScoreBoard({
   const deuce = isDeuce(currentSet);
   const isMatchOver = game.matchWinner !== null || !!game.endedAt;
   const isFreePlay = game.bestOf === 0;
+  const isRotation = !!rotationInfo;
 
   // Build game point label
   let gamePointLabel: string | null = null;
-  if (game.isLastSet) {
+  if (isRotation) {
+    // Rotation mode: single-set games, simpler labels
+    if (deuce) {
+      gamePointLabel = "Deuce!";
+    } else if (gamePoint) {
+      gamePointLabel = `Game Point — ${game.teams[gamePoint.team].name}`;
+    }
+  } else if (game.isLastSet) {
     if (deuce) {
       gamePointLabel = "Deuce! — Final Set";
     } else if (gamePoint) {
@@ -65,14 +80,25 @@ export function ScoreBoard({
       {/* Header - Sets won overview */}
       <div className="header-section flex flex-col items-center gap-1 pt-2 pb-0.5 sm:gap-1.5 sm:pt-3 sm:pb-1">
         <h1 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest text-white/40">
-          {isFreePlay ? "Free Play" : `Best of ${game.bestOf}`}
+          {rotationInfo
+            ? `Game ${rotationInfo.gameNumber} · ${rotationInfo.totalPlayers} Players`
+            : isFreePlay ? "Free Play" : `Best of ${game.bestOf}`}
         </h1>
         <SetsWonIndicator setsWon={setsWon} teams={game.teams} />
         <SetIndicator sets={game.sets} currentSet={game.currentSet} />
       </div>
 
-      {/* Last Set Suggestion Banner */}
-      {suggestLastSet && !game.isLastSet && isFreePlay && (
+      {/* Sitting out banner — rotation mode */}
+      {rotationInfo && rotationInfo.sittingOut.length > 0 && (
+        <div className="mx-3 mt-1 rounded-xl bg-violet-500/10 border border-violet-500/20 px-3 py-1.5 text-center">
+          <span className="text-[10px] sm:text-[11px] font-medium text-violet-300">
+            🪑 Sitting out: <span className="font-bold">{rotationInfo.sittingOut.join(", ")}</span>
+          </span>
+        </div>
+      )}
+
+      {/* Last Set Suggestion Banner — hidden in rotation mode */}
+      {!isRotation && suggestLastSet && !game.isLastSet && isFreePlay && (
         <div className="mx-3 mt-1 animate-slide-up">
           <button
             onClick={onMarkLastSet}
@@ -85,8 +111,8 @@ export function ScoreBoard({
         </div>
       )}
 
-      {/* Last Set Active Banner */}
-      {game.isLastSet && !isMatchOver && (
+      {/* Last Set Active Banner — hidden in rotation mode */}
+      {!isRotation && game.isLastSet && !isMatchOver && (
         <div className="mx-3 mt-1 rounded-xl bg-orange-500/10 border border-orange-500/20 px-3 py-1 sm:px-4 sm:py-1.5 text-center">
           <span className="text-[10px] sm:text-[11px] font-bold text-orange-400 uppercase tracking-wider">
             🏁 Final Set
@@ -139,6 +165,7 @@ export function ScoreBoard({
           canUndo={game.history.length > 0}
           isFreePlay={isFreePlay}
           isLastSet={game.isLastSet ?? false}
+          isRotation={isRotation}
           onUndo={onUndo}
           onReset={onReset}
           onMarkLastSet={onMarkLastSet}

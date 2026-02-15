@@ -4,6 +4,7 @@ interface GameControlsProps {
   canUndo: boolean;
   isFreePlay: boolean;
   isLastSet: boolean;
+  isRotation: boolean;
   onUndo: () => void;
   onReset: () => void;
   onMarkLastSet: () => void;
@@ -17,6 +18,7 @@ export function GameControls({
   canUndo,
   isFreePlay,
   isLastSet,
+  isRotation,
   onUndo,
   onReset,
   onMarkLastSet,
@@ -66,7 +68,7 @@ export function GameControls({
         </div>
 
         {/* Right side — Last Set or End — min 44px tap target */}
-        {isFreePlay && !isLastSet ? (
+        {isFreePlay && !isLastSet && !isRotation ? (
           <button
             onClick={onMarkLastSet}
             className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-amber-500/15 border border-amber-500/20 px-3 sm:px-3 min-h-[44px] text-[13px] sm:text-sm font-medium text-amber-400 transition-all active:bg-amber-500/25 active:scale-[0.97]"

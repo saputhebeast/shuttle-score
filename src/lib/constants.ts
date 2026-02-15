@@ -52,6 +52,7 @@ export function createInitialGameState(
   durationMinutes: number | null = null,
   leftPlayerIds: string[] = [],
   rightPlayerIds: string[] = [],
+  isLastSet: boolean = false,
 ): GameState {
   return {
     id: crypto.randomUUID(),
@@ -68,7 +69,7 @@ export function createInitialGameState(
     endedAt: null,
     bestOf,
     durationMinutes,
-    isLastSet: false,
+    isLastSet,
     setStartedAt: [Date.now()],
   };
 }
@@ -77,4 +78,6 @@ export const STORAGE_KEYS = {
   CURRENT_GAME: "badminton-current-game",
   MATCH_HISTORY: "badminton-match-history",
   PLAYERS: "badminton-players",
+  TOURNAMENT: "badminton-tournament",
+  ROTATION_SESSION: "badminton-rotation-session",
 } as const;

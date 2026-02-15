@@ -88,6 +88,7 @@ export function useGame() {
         config.durationMinutes,
         config.leftPlayerIds,
         config.rightPlayerIds,
+        config.isLastSet,
       );
       setSummary(null);
       setSuggestLastSet(false);
@@ -125,29 +126,10 @@ export function useGame() {
 
   const endSession = useCallback(() => {
     if (!game) return;
-    // Force end — compute stats now
-    const endedGame: GameState = { ...game, endedAt: Date.now() };
-    const stats = computeSessionStats(endedGame);
-    setSummary(stats);
-
-    // Save to history
-    const matchSummary: MatchSummary = {
-      id: game.id,
-      teams: game.teams,
-      sets: game.sets.filter((s) => s.winner),
-      matchWinner: game.matchWinner,
-      startedAt: game.startedAt,
-      endedAt: Date.now(),
-      bestOf: game.bestOf,
-      stats,
-      playerIds: {
-        left: game.teams.left.playerIds ?? [],
-        right: game.teams.right.playerIds ?? [],
-      },
-    };
-    setMatchHistory((prev) => [matchSummary, ...prev]);
-    setGame(endedGame);
-  }, [game, setGame, setMatchHistory]);
+    // Force end — set endedAt to trigger the useEffect that computes stats
+    // and saves to history (single save path, no double-save)
+    setGame({ ...game, endedAt: Date.now() });
+  }, [game, setGame]);
 
   const dismissSummary = useCallback(() => {
     setSummary(null);
