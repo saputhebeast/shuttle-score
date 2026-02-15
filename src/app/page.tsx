@@ -1,10 +1,12 @@
 "use client";
 
 import { useGame } from "@/hooks/use-game";
+import { usePlayerRoster } from "@/hooks/use-player-roster";
 import { ScoreBoard } from "@/components/scoreboard/score-board";
 import { NewGameModal } from "@/components/new-game-modal";
 import { MatchHistory } from "@/components/match-history";
 import { SessionSummary } from "@/components/session-summary";
+import { PlayerAnalytics } from "@/components/player-analytics";
 
 export default function Home() {
   const {
@@ -24,8 +26,10 @@ export default function Home() {
     clearHistory,
   } = useGame();
 
+  const { players, hydrated: playersHydrated, addPlayer } = usePlayerRoster();
+
   // Wait for localStorage to hydrate before rendering to avoid SSR mismatch
-  if (!isHydrated) {
+  if (!isHydrated || !playersHydrated) {
     return (
       <div className="flex h-[100dvh] items-center justify-center bg-gray-900">
         <div className="text-4xl animate-pulse">🏸</div>
@@ -48,9 +52,15 @@ export default function Home() {
   if (!game) {
     return (
       <div className="overflow-y-auto h-[100dvh] scroll-smooth safe-bottom">
-        <NewGameModal onStart={startNewGame} />
+        <NewGameModal
+          onStart={startNewGame}
+          players={players}
+          onAddPlayer={addPlayer}
+        />
+        <PlayerAnalytics players={players} matches={matchHistory} />
         <MatchHistory
           matches={matchHistory}
+          players={players}
           onClearHistory={clearHistory}
           onNewGame={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         />

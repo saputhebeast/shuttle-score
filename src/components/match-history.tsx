@@ -1,15 +1,16 @@
 "use client";
 
-import type { MatchSummary, TeamSide } from "@/lib/types";
+import type { MatchSummary, Player, TeamSide } from "@/lib/types";
 import { TEAM_COLORS } from "@/lib/constants";
 
 interface MatchHistoryProps {
   matches: MatchSummary[];
+  players: Player[];
   onClearHistory: () => void;
   onNewGame: () => void;
 }
 
-export function MatchHistory({ matches, onClearHistory, onNewGame }: MatchHistoryProps) {
+export function MatchHistory({ matches, players, onClearHistory, onNewGame }: MatchHistoryProps) {
   if (matches.length === 0) return null;
 
   return (
@@ -28,7 +29,7 @@ export function MatchHistory({ matches, onClearHistory, onNewGame }: MatchHistor
 
       <div className="space-y-1.5 sm:space-y-2">
         {matches.slice(0, 10).map((match) => (
-          <MatchCard key={match.id} match={match} />
+          <MatchCard key={match.id} match={match} players={players} />
         ))}
       </div>
 
@@ -44,7 +45,7 @@ export function MatchHistory({ matches, onClearHistory, onNewGame }: MatchHistor
   );
 }
 
-function MatchCard({ match }: { match: MatchSummary }) {
+function MatchCard({ match, players }: { match: MatchSummary; players: Player[] }) {
   const date = new Date(match.startedAt);
   const winner = match.matchWinner;
   const isFreePlay = match.bestOf === 0;
@@ -52,6 +53,16 @@ function MatchCard({ match }: { match: MatchSummary }) {
   // In free play, determine who won more sets
   const leftSets = match.sets.filter((s) => s.winner === "left").length;
   const rightSets = match.sets.filter((s) => s.winner === "right").length;
+
+  // Resolve player names for each side
+  const getPlayerNames = (side: TeamSide): string[] => {
+    const ids = match.playerIds?.[side] ?? match.teams[side].playerIds ?? [];
+    return ids
+      .map((id) => players.find((p) => p.id === id)?.name)
+      .filter(Boolean) as string[];
+  };
+  const leftPlayerNames = getPlayerNames("left");
+  const rightPlayerNames = getPlayerNames("right");
 
   return (
     <div className="rounded-xl bg-white/5 p-2.5 sm:p-3">
@@ -78,6 +89,14 @@ function MatchCard({ match }: { match: MatchSummary }) {
           </span>
         </div>
       </div>
+      {/* Player names */}
+      {(leftPlayerNames.length > 0 || rightPlayerNames.length > 0) && (
+        <div className="mt-1 flex items-center gap-2 text-[10px] text-white/30">
+          <span className="truncate">{leftPlayerNames.join(", ") || "—"}</span>
+          <span className="text-white/15">vs</span>
+          <span className="truncate">{rightPlayerNames.join(", ") || "—"}</span>
+        </div>
+      )}
       <div className="mt-1.5 flex gap-2">
         {match.sets
           .filter((s) => s.winner)

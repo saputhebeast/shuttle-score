@@ -49,13 +49,15 @@ export function createInitialGameState(
   leftName: string = DEFAULT_TEAM_NAMES.left,
   rightName: string = DEFAULT_TEAM_NAMES.right,
   bestOf: 0 | 3 | 5 = 3,
-  durationMinutes: number | null = null
+  durationMinutes: number | null = null,
+  leftPlayerIds: string[] = [],
+  rightPlayerIds: string[] = [],
 ): GameState {
   return {
     id: crypto.randomUUID(),
     teams: {
-      left: { name: leftName, color: "blue" },
-      right: { name: rightName, color: "red" },
+      left: { name: leftName, color: "blue", playerIds: leftPlayerIds },
+      right: { name: rightName, color: "red", playerIds: rightPlayerIds },
     },
     currentSet: 0,
     sets: [createInitialSet()],
@@ -74,4 +76,5 @@ export function createInitialGameState(
 export const STORAGE_KEYS = {
   CURRENT_GAME: "badminton-current-game",
   MATCH_HISTORY: "badminton-match-history",
+  PLAYERS: "badminton-players",
 } as const;

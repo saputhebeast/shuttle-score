@@ -1,8 +1,16 @@
 // ─── Domain Types ────────────────────────────────────────────────────────────
 
+export interface Player {
+  id: string;
+  name: string;
+  createdAt: number;
+}
+
 export interface Team {
   name: string;
   color: TeamColor;
+  /** Player IDs on this team (1 for singles, 2 for doubles) */
+  playerIds?: string[];
 }
 
 export type TeamColor = "blue" | "red";
@@ -66,6 +74,8 @@ export interface MatchSummary {
   endedAt: number | null;
   bestOf: 0 | 3 | 5;
   stats?: SessionStats;
+  /** Player IDs per side (for analytics) */
+  playerIds?: Record<TeamSide, string[]>;
 }
 
 export interface SessionStats {
@@ -92,6 +102,30 @@ export interface SessionStats {
 export interface NewGameConfig {
   leftTeamName: string;
   rightTeamName: string;
+  leftPlayerIds: string[];
+  rightPlayerIds: string[];
   bestOf: 0 | 3 | 5;
   durationMinutes: number | null;
+}
+
+// ─── Player Analytics ────────────────────────────────────────────────────────
+
+export interface PlayerStats {
+  playerId: string;
+  playerName: string;
+  matchesPlayed: number;
+  matchesWon: number;
+  matchesLost: number;
+  matchesDrawn: number;
+  winRate: number;
+  setsWon: number;
+  setsLost: number;
+  totalPointsFor: number;
+  totalPointsAgainst: number;
+  /** Partner ID → { played, won } */
+  partnerRecord: Record<string, { played: number; won: number }>;
+  /** Opponent ID → { played, won } */
+  opponentRecord: Record<string, { played: number; won: number }>;
+  /** Recent form: last 5 results as W/L/D */
+  recentForm: ("W" | "L" | "D")[];
 }

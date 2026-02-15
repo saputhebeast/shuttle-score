@@ -15,7 +15,8 @@ export function SessionSummary({ game, stats, onDismiss }: SessionSummaryProps) 
   const isDraw = !winner && stats.setsWon.left === stats.setsWon.right;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-gray-900 px-4 sm:px-5 py-4 sm:py-6 overflow-y-auto safe-bottom scroll-smooth">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-900 px-4 sm:px-5 py-4 sm:py-6 safe-bottom scroll-smooth">
+      <div className="mx-auto max-w-md">
       {/* Header */}
       <div className="mb-4 sm:mb-6 text-center animate-scale-in">
         <div className="mb-1.5 sm:mb-2 text-3xl sm:text-4xl">{winner ? "🏆" : "🤝"}</div>
@@ -149,10 +150,11 @@ export function SessionSummary({ game, stats, onDismiss }: SessionSummaryProps) 
       {/* Done button */}
       <button
         onClick={onDismiss}
-        className="mt-auto w-full rounded-xl bg-gradient-to-r from-blue-600 to-red-600 px-6 min-h-[52px] text-base sm:text-lg font-bold text-white shadow-lg transition-all active:scale-[0.98]"
+        className="mt-8 mb-6 w-full rounded-xl bg-gradient-to-r from-blue-600 to-red-600 px-6 min-h-[52px] text-base sm:text-lg font-bold text-white shadow-lg transition-all active:scale-[0.98]"
       >
         Done
       </button>
+      </div>
     </div>
   );
 }

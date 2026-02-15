@@ -68,6 +68,10 @@ export function useGame() {
         endedAt: game.endedAt,
         bestOf: game.bestOf,
         stats,
+        playerIds: {
+          left: game.teams.left.playerIds ?? [],
+          right: game.teams.right.playerIds ?? [],
+        },
       };
       setMatchHistory((prev) => [matchSummary, ...prev]);
     }
@@ -81,7 +85,9 @@ export function useGame() {
         config.leftTeamName || undefined,
         config.rightTeamName || undefined,
         config.bestOf,
-        config.durationMinutes
+        config.durationMinutes,
+        config.leftPlayerIds,
+        config.rightPlayerIds,
       );
       setSummary(null);
       setSuggestLastSet(false);
@@ -134,6 +140,10 @@ export function useGame() {
       endedAt: Date.now(),
       bestOf: game.bestOf,
       stats,
+      playerIds: {
+        left: game.teams.left.playerIds ?? [],
+        right: game.teams.right.playerIds ?? [],
+      },
     };
     setMatchHistory((prev) => [matchSummary, ...prev]);
     setGame(endedGame);
