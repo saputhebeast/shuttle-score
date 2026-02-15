@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import type { NewGameConfig, Player } from "@/lib/types";
 import { DEFAULT_TEAM_NAMES } from "@/lib/constants";
 import { totalMatchCount, matchesPerPlayer } from "@/lib/tournament-engine";
+import { ShuttlecockIcon, TargetIcon, NumberBadge, SwordsIcon, RotateIcon, BenchIcon, SkullIcon } from "@/components/ui/icons";
 
 type GameMode = "free" | "bo3" | "bo5" | "challenge";
 
@@ -25,11 +26,11 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const PENALTY_SUGGESTIONS = [
-  "🏸 Buy shuttlecocks",
-  "⚡ Buy energy drinks",
-  "🍕 Buy pizza for everyone",
-  "☕ Buy coffee next session",
-  "🧹 Clean the court",
+  "Buy shuttlecocks",
+  "Buy energy drinks",
+  "Buy pizza for everyone",
+  "Buy coffee next session",
+  "Clean the court",
 ];
 
 export function NewGameModal({
@@ -230,11 +231,11 @@ export function NewGameModal({
       if (selectedIds.length < 4)
         return `Select ${4 - selectedIds.length} more player${4 - selectedIds.length > 1 ? "s" : ""}`;
       if (!penalty.trim()) return "Set a penalty to start";
-      return "Start Challenge ⚔️";
+      return "Start Challenge";
     }
     if (!canStart) return "Assign players to teams";
-    if (isAutoMode) return "Start Rotation 🔄";
-    return "Start Match 🏸";
+    if (isAutoMode) return "Start Rotation";
+    return "Start Match";
   };
 
   const showTeamAssignment = !isChallenge && selectedIds.length >= 2;
@@ -242,17 +243,18 @@ export function NewGameModal({
   const showAutoTeams = showTeamAssignment && isAutoMode && autoAssignment;
 
   return (
-    <div className="bg-gray-900 px-4 sm:px-6 pt-10 pb-4 animate-fade-in">
+    <div className="bg-[#F5F5F7] px-4 sm:px-6 pt-10 pb-4 animate-fade-in">
       <div className="w-full max-w-md mx-auto">
         {/* Logo / Title */}
-        <div className="relative overflow-hidden mb-8 text-center">
-          <div className="absolute inset-0 opacity-10 blur-3xl bg-gradient-to-b from-blue-500 via-transparent to-transparent" />
+        <div className="relative mb-8 text-center">
           <div className="relative">
-            <div className="mb-3 text-5xl">🏸</div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            <div className="mb-3 flex justify-center">
+              <ShuttlecockIcon className="w-12 h-12 text-gray-900" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
               Shuttle Score
             </h1>
-            <p className="mt-1.5 text-sm text-white/40">
+            <p className="mt-1.5 text-sm text-gray-400">
               Badminton score tracker
             </p>
           </div>
@@ -268,10 +270,10 @@ export function NewGameModal({
                   <span
                     className={`text-[11px] font-bold tabular-nums shrink-0 ${
                       selectedIds.length >= 4
-                        ? "text-green-400"
+                        ? "text-green-600"
                         : selectedIds.length >= 2
-                          ? "text-amber-400"
-                          : "text-white/30"
+                          ? "text-amber-600"
+                          : "text-gray-400"
                     }`}
                   >
                     {selectedIds.length} selected
@@ -281,7 +283,7 @@ export function NewGameModal({
               <button
                 type="button"
                 onClick={() => setShowAddPlayer(!showAddPlayer)}
-                className="text-[11px] sm:text-xs font-semibold text-green-400 active:text-green-300 transition-colors ml-3"
+                className="text-[11px] sm:text-xs font-semibold text-blue-600 active:text-blue-500 transition-colors ml-3"
               >
                 + Add
               </button>
@@ -303,14 +305,14 @@ export function NewGameModal({
                       handleAddPlayer();
                     }
                   }}
-                  className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/30"
+                  className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/20 shadow-sm"
                   autoFocus
                 />
                 <button
                   type="button"
                   onClick={handleAddPlayer}
                   disabled={!newPlayerName.trim()}
-                  className="rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-all active:scale-[0.97] disabled:opacity-40"
+                  className="rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition-all active:scale-[0.97] disabled:opacity-40 shadow-sm"
                 >
                   Add
                 </button>
@@ -319,8 +321,8 @@ export function NewGameModal({
 
             {/* Player chips */}
             {players.length === 0 ? (
-              <div className="rounded-2xl bg-white/[0.03] py-6 text-center">
-                <p className="text-sm text-white/25">
+              <div className="rounded-2xl bg-white border border-gray-200 py-6 text-center shadow-sm">
+                <p className="text-sm text-gray-400">
                   Add your group to get started
                 </p>
               </div>
@@ -333,15 +335,15 @@ export function NewGameModal({
                       key={p.id}
                       type="button"
                       onClick={() => togglePlayer(p.id)}
-                      className={`rounded-xl border px-3 py-2 text-[13px] sm:text-sm font-semibold transition-all active:scale-[0.97] ${
+                      className={`rounded-xl border px-3 py-2 text-[13px] sm:text-sm font-semibold transition-all active:scale-[0.97] shadow-sm ${
                         isSelected
-                          ? "border-green-500 bg-green-500/15 text-green-300"
-                          : "border-white/10 bg-white/[0.04] text-white/60 active:bg-white/8"
+                          ? "border-gray-900 bg-gray-900 text-white"
+                          : "border-gray-200 bg-white text-gray-700 active:bg-gray-50"
                       }`}
                     >
                       <div className="flex items-center gap-1.5">
                         {isSelected && (
-                          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-green-500 text-[9px] font-bold text-gray-900">
+                          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-bold text-gray-900">
                             ✓
                           </span>
                         )}
@@ -362,33 +364,33 @@ export function NewGameModal({
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {([
-                  { value: "free" as GameMode, label: "Free Play", icon: "🎯", desc: "Unlimited sets", disabled: false },
-                  { value: "bo3" as GameMode, label: "Best of 3", icon: "3️⃣", desc: "First to 2 sets", disabled: false },
-                  { value: "bo5" as GameMode, label: "Best of 5", icon: "5️⃣", desc: "First to 3 sets", disabled: false },
-                  { value: "challenge" as GameMode, label: "Challenge", icon: "⚔️", desc: "Round-robin · Losers pay", disabled: selectedIds.length < 4 },
+                  { value: "free" as GameMode, label: "Free Play", icon: <TargetIcon className="w-4 h-4" />, desc: "Unlimited sets", disabled: false },
+                  { value: "bo3" as GameMode, label: "Best of 3", icon: <NumberBadge n={3} className="w-4 h-4" />, desc: "First to 2 sets", disabled: false },
+                  { value: "bo5" as GameMode, label: "Best of 5", icon: <NumberBadge n={5} className="w-4 h-4" />, desc: "First to 3 sets", disabled: false },
+                  { value: "challenge" as GameMode, label: "Challenge", icon: <SwordsIcon className="w-4 h-4" />, desc: "Round-robin · Losers pay", disabled: selectedIds.length < 4 },
                 ]).map(({ value, label, icon, desc, disabled }) => (
                   <button
                     key={value}
                     type="button"
                     disabled={disabled}
                     onClick={() => handleModeChange(value)}
-                    className={`rounded-2xl border p-3 text-left transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed ${
+                    className={`rounded-2xl border p-3 text-left transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed shadow-sm ${
                       mode === value
                         ? value === "challenge"
-                          ? "border-amber-500/50 bg-amber-500/12 ring-1 ring-amber-500/20"
-                          : "border-green-500/50 bg-green-500/12 ring-1 ring-green-500/20"
-                        : "border-white/8 bg-white/[0.03] active:bg-white/8"
+                          ? "border-gray-900 bg-white ring-1 ring-gray-900/20"
+                          : "border-gray-900 bg-white ring-1 ring-gray-900/20"
+                        : "border-gray-200 bg-white active:bg-gray-50"
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-base">{icon}</span>
+                      <span className={`${
+                        mode === value ? "text-gray-900" : "text-gray-400"
+                      }`}>{icon}</span>
                       <span
                         className={`text-[13px] sm:text-sm font-bold ${
                           mode === value
-                            ? value === "challenge"
-                              ? "text-amber-300"
-                              : "text-green-400"
-                            : "text-white/60"
+                            ? "text-gray-900"
+                            : "text-gray-600"
                         }`}
                       >
                         {label}
@@ -397,10 +399,8 @@ export function NewGameModal({
                     <p
                       className={`text-[10px] ${
                         mode === value
-                          ? value === "challenge"
-                            ? "text-amber-400/60"
-                            : "text-green-400/50"
-                          : "text-white/25"
+                          ? "text-gray-500"
+                          : "text-gray-400"
                       }`}
                     >
                       {disabled
@@ -414,7 +414,7 @@ export function NewGameModal({
               {/* Free play duration */}
               {mode === "free" && (
                 <div className="mt-3 space-y-2 animate-slide-up">
-                  <p className="text-[11px] text-white/30">
+                  <p className="text-[11px] text-gray-400">
                     Session duration (optional)
                   </p>
                   <div className="flex gap-2">
@@ -428,10 +428,10 @@ export function NewGameModal({
                         key={label}
                         type="button"
                         onClick={() => setDurationMinutes(value)}
-                        className={`flex-1 rounded-xl border min-h-[38px] text-xs font-semibold transition-all active:scale-[0.97] ${
+                        className={`flex-1 rounded-xl border min-h-[38px] text-xs font-semibold transition-all active:scale-[0.97] shadow-sm ${
                           durationMinutes === value
-                            ? "border-amber-500/50 bg-amber-500/15 text-amber-400"
-                            : "border-white/8 bg-white/[0.03] text-white/35 active:bg-white/8"
+                            ? "border-gray-900 bg-gray-900 text-white"
+                            : "border-gray-200 bg-white text-gray-500 active:bg-gray-50"
                         }`}
                       >
                         {label}
@@ -446,12 +446,12 @@ export function NewGameModal({
           {/* Step 2b: Rotation Mode Info (5+ players, auto mode) */}
           {isAutoMode && (
             <div className="animate-slide-up">
-              <div className="rounded-2xl border border-violet-500/30 bg-violet-500/8 p-4 space-y-2">
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 space-y-2 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🔄</span>
-                  <span className="text-[13px] sm:text-sm font-bold text-violet-300">Rotation Mode</span>
+                  <RotateIcon className="w-4 h-4 text-gray-500" />
+                  <span className="text-[13px] sm:text-sm font-bold text-gray-900">Rotation Mode</span>
                 </div>
-                <p className="text-[11px] text-violet-300/60 leading-relaxed">
+                <p className="text-[11px] text-gray-500 leading-relaxed">
                   {selectedIds.length} players · 1 set per game · Players rotate automatically after each game so everyone gets equal time.
                 </p>
               </div>
@@ -504,7 +504,7 @@ export function NewGameModal({
                 <button
                   type="button"
                   onClick={handleShuffle}
-                  className="flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-amber-400 active:text-amber-300 transition-colors"
+                  className="flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-blue-600 active:text-blue-500 transition-colors"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -527,12 +527,12 @@ export function NewGameModal({
                 </button>
               </div>
 
-              <div className="rounded-2xl bg-white/[0.04] p-4">
+              <div className="rounded-2xl bg-white border border-gray-200 p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex-1 text-center">
                     <div className="flex items-center justify-center gap-1 mb-1.5">
                       <span className="h-2 w-2 rounded-full bg-blue-500" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-400">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-600">
                         Team 1
                       </span>
                     </div>
@@ -540,7 +540,7 @@ export function NewGameModal({
                       {autoAssignment.left.map((p) => (
                         <div
                           key={p.id}
-                          className="text-sm font-semibold text-white/90"
+                          className="text-sm font-semibold text-gray-900"
                         >
                           {p.name}
                         </div>
@@ -549,7 +549,7 @@ export function NewGameModal({
                   </div>
 
                   <div className="shrink-0">
-                    <span className="text-[11px] text-white/20 font-bold">
+                    <span className="text-[11px] text-gray-300 font-bold">
                       VS
                     </span>
                   </div>
@@ -557,7 +557,7 @@ export function NewGameModal({
                   <div className="flex-1 text-center">
                     <div className="flex items-center justify-center gap-1 mb-1.5">
                       <span className="h-2 w-2 rounded-full bg-red-500" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-red-400">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-red-600">
                         Team 2
                       </span>
                     </div>
@@ -565,7 +565,7 @@ export function NewGameModal({
                       {autoAssignment.right.map((p) => (
                         <div
                           key={p.id}
-                          className="text-sm font-semibold text-white/90"
+                          className="text-sm font-semibold text-gray-900"
                         >
                           {p.name}
                         </div>
@@ -575,9 +575,9 @@ export function NewGameModal({
                 </div>
 
                 {autoAssignment.sittingOut.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-white/5 text-center">
-                    <span className="text-[10px] text-white/25 font-medium">
-                      🪑 Sitting out:{" "}
+                  <div className="mt-3 pt-3 border-t border-gray-100 text-center">
+                    <span className="text-[10px] text-gray-400 font-medium inline-flex items-center gap-1">
+                      <BenchIcon className="w-3 h-3" /> Sitting out:{" "}
                       {autoAssignment.sittingOut
                         .map((p) => p.name)
                         .join(", ")}
@@ -594,7 +594,7 @@ export function NewGameModal({
               {/* Penalty Input */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <SectionLabel>Loser&apos;s Penalty 💀</SectionLabel>
+                  <SectionLabel>Loser&apos;s Penalty</SectionLabel>
                 </div>
                 <input
                   type="text"
@@ -602,7 +602,7 @@ export function NewGameModal({
                   onChange={(e) => setPenalty(e.target.value)}
                   placeholder="e.g. Buy shuttlecocks for next week"
                   maxLength={50}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/20 shadow-sm"
                 />
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {PENALTY_SUGGESTIONS.map((s) => (
@@ -612,8 +612,8 @@ export function NewGameModal({
                       onClick={() => setPenalty(s)}
                       className={`rounded-lg border px-2.5 py-1 text-[11px] transition-all active:scale-[0.97] ${
                         penalty === s
-                          ? "border-amber-500/50 bg-amber-500/15 text-amber-300"
-                          : "border-white/10 bg-white/5 text-white/40 active:bg-white/10"
+                          ? "border-gray-900 bg-gray-900 text-white"
+                          : "border-gray-200 bg-white text-gray-500 active:bg-gray-50"
                       }`}
                     >
                       {s}
@@ -625,36 +625,36 @@ export function NewGameModal({
               {/* Tournament Info */}
               {selectedIds.length >= 4 && (
                 <div className="animate-slide-up">
-                  <div className="rounded-2xl bg-white/[0.04] px-4 py-3.5 space-y-3">
+                  <div className="rounded-2xl bg-white border border-gray-200 px-4 py-3.5 space-y-3 shadow-sm">
                     <div className="grid grid-cols-3 gap-3 text-center">
                       <div>
-                        <div className="text-lg font-black text-white">
+                        <div className="text-lg font-black text-gray-900">
                           {selectedIds.length}
                         </div>
-                        <div className="text-[10px] text-white/30 font-medium">
+                        <div className="text-[10px] text-gray-400 font-medium">
                           Players
                         </div>
                       </div>
                       <div>
-                        <div className="text-lg font-black text-amber-400">
+                        <div className="text-lg font-black text-gray-900">
                           {challengeMatchCount}
                         </div>
-                        <div className="text-[10px] text-white/30 font-medium">
+                        <div className="text-[10px] text-gray-400 font-medium">
                           Matches
                         </div>
                       </div>
                       <div>
-                        <div className="text-lg font-black text-white">
+                        <div className="text-lg font-black text-gray-900">
                           {challengePerPlayer}
                         </div>
-                        <div className="text-[10px] text-white/30 font-medium">
+                        <div className="text-[10px] text-gray-400 font-medium">
                           Per Player
                         </div>
                       </div>
                     </div>
                     {challengeSitOutCount > 0 && (
-                      <p className="text-[11px] text-white/25 text-center border-t border-white/5 pt-2.5">
-                        🪑 {challengeSitOutCount}{" "}
+                      <p className="text-[11px] text-gray-400 text-center border-t border-gray-100 pt-2.5">
+                        <BenchIcon className="w-3 h-3 inline-block mr-0.5 -mt-px" /> {challengeSitOutCount}{" "}
                         {challengeSitOutCount === 1
                           ? "player sits"
                           : "players sit"}{" "}
@@ -671,12 +671,10 @@ export function NewGameModal({
           <button
             type="submit"
             disabled={!canStart}
-            className={`w-full rounded-2xl px-6 min-h-[56px] text-base sm:text-lg font-bold text-white shadow-lg transition-all active:scale-[0.98] disabled:cursor-not-allowed ${
+            className={`w-full rounded-2xl px-6 min-h-[56px] text-base sm:text-lg font-bold shadow-sm transition-all active:scale-[0.98] disabled:cursor-not-allowed ${
               canStart
-                ? isChallenge
-                  ? "bg-gradient-to-r from-amber-600 to-orange-600 shadow-amber-600/25"
-                  : "bg-gradient-to-r from-blue-600 to-violet-600 shadow-blue-600/25"
-                : "bg-white/8 text-white/25 shadow-none"
+                ? "bg-gray-900 text-white shadow-gray-900/20"
+                : "bg-gray-200 text-gray-400 shadow-none"
             }`}
           >
             {getButtonLabel()}
@@ -692,10 +690,10 @@ export function NewGameModal({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-white/35">
+      <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
         {children}
       </span>
-      <div className="flex-1 h-px bg-white/8" />
+      <div className="flex-1 h-px bg-gray-200" />
     </div>
   );
 }
@@ -717,8 +715,8 @@ function ManualPlayerChip({
 
   if (leftFull && rightFull) {
     return (
-      <span className="rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2 text-[13px] sm:text-sm font-semibold text-white/20 flex items-center gap-1">
-        🪑 {player.name}
+      <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-[13px] sm:text-sm font-semibold text-gray-400 flex items-center gap-1">
+        <BenchIcon className="w-3.5 h-3.5" /> {player.name}
       </span>
     );
   }
@@ -728,7 +726,7 @@ function ManualPlayerChip({
       <button
         type="button"
         onClick={() => onAssign(leftFull ? "right" : "left")}
-        className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[13px] sm:text-sm font-semibold text-white/70 transition-all active:scale-[0.97] active:bg-white/8"
+        className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-[13px] sm:text-sm font-semibold text-gray-700 transition-all active:scale-[0.97] active:bg-gray-50 shadow-sm"
       >
         {player.name}
       </button>
@@ -740,10 +738,10 @@ function ManualPlayerChip({
       <button
         type="button"
         onClick={() => setShowPicker(!showPicker)}
-        className={`rounded-xl border px-3 py-2 text-[13px] sm:text-sm font-semibold transition-all active:scale-[0.97] ${
+        className={`rounded-xl border px-3 py-2 text-[13px] sm:text-sm font-semibold transition-all active:scale-[0.97] shadow-sm ${
           showPicker
-            ? "border-white/25 bg-white/10 text-white"
-            : "border-white/10 bg-white/[0.04] text-white/70 active:bg-white/8"
+            ? "border-gray-900 bg-gray-50 text-gray-900"
+            : "border-gray-200 bg-white text-gray-700 active:bg-gray-50"
         }`}
       >
         {player.name}
@@ -756,7 +754,7 @@ function ManualPlayerChip({
               onAssign("left");
               setShowPicker(false);
             }}
-            className="rounded-xl bg-blue-600 px-3 py-2 text-[11px] font-bold text-white shadow-lg shadow-blue-600/30 transition-all active:scale-[0.95]"
+            className="rounded-xl bg-blue-500 px-3 py-2 text-[11px] font-bold text-white shadow-md transition-all active:scale-[0.95]"
           >
             Team 1
           </button>
@@ -766,7 +764,7 @@ function ManualPlayerChip({
               onAssign("right");
               setShowPicker(false);
             }}
-            className="rounded-xl bg-red-600 px-3 py-2 text-[11px] font-bold text-white shadow-lg shadow-red-600/30 transition-all active:scale-[0.95]"
+            className="rounded-xl bg-red-500 px-3 py-2 text-[11px] font-bold text-white shadow-md transition-all active:scale-[0.95]"
           >
             Team 2
           </button>
@@ -794,25 +792,25 @@ function TeamSlot({
   const accent =
     color === "blue"
       ? {
-          ring: "ring-blue-500/25",
-          bg: "bg-blue-500/8",
+          ring: "ring-blue-200",
+          bg: "bg-blue-50",
           dot: "bg-blue-500",
-          label: "text-blue-400",
-          chip: "bg-blue-500/12 border-blue-500/20",
+          label: "text-blue-600",
+          chip: "bg-blue-50 border-blue-200",
         }
       : {
-          ring: "ring-red-500/25",
-          bg: "bg-red-500/8",
+          ring: "ring-red-200",
+          bg: "bg-red-50",
           dot: "bg-red-500",
-          label: "text-red-400",
-          chip: "bg-red-500/12 border-red-500/20",
+          label: "text-red-600",
+          chip: "bg-red-50 border-red-200",
         };
 
   const hasPlayers = playerIds.length > 0;
 
   return (
     <div
-      className={`rounded-2xl transition-all ${hasPlayers ? `${accent.bg} ring-1 ${accent.ring}` : "bg-white/[0.03]"} p-3`}
+      className={`rounded-2xl transition-all ${hasPlayers ? `${accent.bg} ring-1 ${accent.ring}` : "bg-white border border-gray-200"} p-3 shadow-sm`}
     >
       <div className="flex items-center gap-1.5 mb-2">
         <span className={`h-2 w-2 rounded-full ${accent.dot}`} />
@@ -823,7 +821,7 @@ function TeamSlot({
         </span>
       </div>
       {!hasPlayers ? (
-        <p className="text-[11px] text-white/20 py-1">Tap a player ↑</p>
+        <p className="text-[11px] text-gray-400 py-1">Tap a player ↑</p>
       ) : (
         <div className="space-y-1.5">
           {playerIds.map((id) => {
@@ -834,13 +832,13 @@ function TeamSlot({
                 key={id}
                 className={`flex items-center justify-between rounded-xl border ${accent.chip} px-2.5 py-1.5`}
               >
-                <span className="text-[13px] font-semibold text-white/90 truncate">
+                <span className="text-[13px] font-semibold text-gray-900 truncate">
                   {p.name}
                 </span>
                 <button
                   type="button"
                   onClick={() => onRemove(id)}
-                  className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/5 text-white/30 active:text-white/60 text-[10px] leading-none transition-colors"
+                  className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-gray-500 active:text-gray-700 text-[10px] leading-none transition-colors"
                   aria-label={`Remove ${p.name}`}
                 >
                   ✕

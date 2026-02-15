@@ -20,8 +20,8 @@ export function SetIndicator({ sets, currentSet }: SetIndicatorProps) {
               transition-all duration-200
               ${
                 i === currentSet
-                  ? "bg-white text-gray-900 shadow-md scale-105"
-                  : "bg-white/10 text-white/70"
+                  ? "bg-gray-900 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-500"
               }
             `}
           >
@@ -32,7 +32,7 @@ export function SetIndicator({ sets, currentSet }: SetIndicatorProps) {
               </span>
             )}
             {(set.winner || (!set.winner && i === currentSet)) && (
-              <span className={`text-[10px] ${set.winner ? "opacity-80" : "opacity-60"}`}>
+              <span className={`text-[10px] ${set.winner ? "opacity-70" : "opacity-50"}`}>
                 {set.left}-{set.right}
               </span>
             )}
@@ -53,13 +53,13 @@ export function SetsWonIndicator({ setsWon, teams }: SetsWonIndicatorProps) {
     <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium">
       <div className="flex items-center gap-1 sm:gap-1.5">
         <span className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full ${TEAM_COLORS.left.bg}`} />
-        <span className="text-white/80 truncate max-w-[60px] sm:max-w-none">{teams.left.name}</span>
-        <span className="ml-0.5 sm:ml-1 text-base sm:text-lg font-bold text-white">{setsWon.left}</span>
+        <span className="text-gray-600 truncate max-w-[60px] sm:max-w-none">{teams.left.name}</span>
+        <span className="ml-0.5 sm:ml-1 text-base sm:text-lg font-bold text-gray-900">{setsWon.left}</span>
       </div>
-      <span className="text-white/40">–</span>
+      <span className="text-gray-300">–</span>
       <div className="flex items-center gap-1 sm:gap-1.5">
-        <span className="ml-0.5 sm:ml-1 text-base sm:text-lg font-bold text-white">{setsWon.right}</span>
-        <span className="text-white/80 truncate max-w-[60px] sm:max-w-none">{teams.right.name}</span>
+        <span className="ml-0.5 sm:ml-1 text-base sm:text-lg font-bold text-gray-900">{setsWon.right}</span>
+        <span className="text-gray-600 truncate max-w-[60px] sm:max-w-none">{teams.right.name}</span>
         <span className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full ${TEAM_COLORS.right.bg}`} />
       </div>
     </div>

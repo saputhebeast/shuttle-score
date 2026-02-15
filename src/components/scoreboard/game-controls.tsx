@@ -1,5 +1,7 @@
 "use client";
 
+import { ClockIcon } from "@/components/ui/icons";
+
 interface GameControlsProps {
   canUndo: boolean;
   isFreePlay: boolean;
@@ -32,7 +34,7 @@ export function GameControls({
       {/* Game point label */}
       {gamePointLabel && (
         <div className="flex justify-center">
-          <span className="animate-pulse rounded-full bg-yellow-400/90 px-3 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase text-gray-900">
+          <span className="animate-pulse rounded-full bg-gray-900 px-3 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase text-white shadow-sm">
             {gamePointLabel}
           </span>
         </div>
@@ -44,7 +46,7 @@ export function GameControls({
         <button
           onClick={onUndo}
           disabled={!canUndo}
-          className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-white/10 px-3 sm:px-4 min-h-[44px] text-[13px] sm:text-sm font-medium text-white transition-all active:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-gray-100 px-3 sm:px-4 min-h-[44px] text-[13px] sm:text-sm font-medium text-gray-700 transition-all active:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label="Undo last point"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -58,12 +60,12 @@ export function GameControls({
         <div className="flex flex-col items-center gap-0.5 min-w-0">
           <span className={`font-mono text-[13px] sm:text-sm tabular-nums ${
             isTimeWarning
-              ? "text-amber-400 animate-pulse font-bold"
+              ? "text-amber-600 animate-pulse font-bold"
               : isCountdown
-              ? "text-white/70"
-              : "text-white/50"
+              ? "text-gray-600"
+              : "text-gray-400"
           }`}>
-            {isCountdown && "⏱ "}{elapsedTime}
+            {isCountdown && <><ClockIcon className="w-3 h-3 inline-block mr-0.5 -mt-px" /> </>}{elapsedTime}
           </span>
         </div>
 
@@ -71,7 +73,7 @@ export function GameControls({
         {isFreePlay && !isLastSet && !isRotation ? (
           <button
             onClick={onMarkLastSet}
-            className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-amber-500/15 border border-amber-500/20 px-3 sm:px-3 min-h-[44px] text-[13px] sm:text-sm font-medium text-amber-400 transition-all active:bg-amber-500/25 active:scale-[0.97]"
+            className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-amber-50 border border-amber-200 px-3 sm:px-3 min-h-[44px] text-[13px] sm:text-sm font-medium text-amber-700 transition-all active:bg-amber-100 active:scale-[0.97]"
             aria-label="Mark as last set"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -83,7 +85,7 @@ export function GameControls({
         ) : (
           <button
             onClick={onReset}
-            className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-white/10 px-3 sm:px-4 min-h-[44px] text-[13px] sm:text-sm font-medium text-white transition-all active:bg-white/20"
+            className="flex items-center justify-center gap-1 sm:gap-1.5 rounded-xl bg-gray-100 px-3 sm:px-4 min-h-[44px] text-[13px] sm:text-sm font-medium text-gray-700 transition-all active:bg-gray-200"
             aria-label="End session"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">

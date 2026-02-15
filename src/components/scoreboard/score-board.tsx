@@ -5,6 +5,7 @@ import { getSetsWon, getGamePointInfo, formatElapsedTime, isDeuce, formatDuratio
 import { TeamScore } from "./team-score";
 import { SetIndicator, SetsWonIndicator } from "./set-indicator";
 import { GameControls } from "./game-controls";
+import { BenchIcon, FlagIcon, ClockIcon, TrophyIcon } from "@/components/ui/icons";
 
 interface ScoreBoardProps {
   game: GameState;
@@ -57,7 +58,7 @@ export function ScoreBoard({
     } else if (gamePoint) {
       gamePointLabel = `Match Point — ${game.teams[gamePoint.team].name}`;
     } else {
-      gamePointLabel = "🏁 Final Set";
+      gamePointLabel = "Final Set";
     }
   } else if (deuce) {
     gamePointLabel = "Deuce!";
@@ -76,10 +77,10 @@ export function ScoreBoard({
   const isTimeWarning = remainingMs !== null && remainingMs > 0 && remainingMs < 10 * 60 * 1000; // < 10 min
 
   return (
-    <div className="flex h-[100dvh] flex-col bg-gray-900 landscape-compact short-screen-compact">
+    <div className="flex h-[100dvh] flex-col bg-white landscape-compact short-screen-compact">
       {/* Header - Sets won overview */}
       <div className="header-section flex flex-col items-center gap-1 pt-2 pb-0.5 sm:gap-1.5 sm:pt-3 sm:pb-1">
-        <h1 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest text-white/40">
+        <h1 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest text-gray-400">
           {rotationInfo
             ? `Game ${rotationInfo.gameNumber} · ${rotationInfo.totalPlayers} Players`
             : isFreePlay ? "Free Play" : `Best of ${game.bestOf}`}
@@ -90,9 +91,9 @@ export function ScoreBoard({
 
       {/* Sitting out banner — rotation mode */}
       {rotationInfo && rotationInfo.sittingOut.length > 0 && (
-        <div className="mx-3 mt-1 rounded-xl bg-violet-500/10 border border-violet-500/20 px-3 py-1.5 text-center">
-          <span className="text-[10px] sm:text-[11px] font-medium text-violet-300">
-            🪑 Sitting out: <span className="font-bold">{rotationInfo.sittingOut.join(", ")}</span>
+        <div className="mx-3 mt-1 rounded-xl bg-gray-50 border border-gray-200 px-3 py-1.5 text-center">
+          <span className="text-[10px] sm:text-[11px] font-medium text-gray-500 inline-flex items-center gap-1">
+            <BenchIcon className="w-3.5 h-3.5" /> Sitting out: <span className="font-bold text-gray-700">{rotationInfo.sittingOut.join(", ")}</span>
           </span>
         </div>
       )}
@@ -102,10 +103,10 @@ export function ScoreBoard({
         <div className="mx-3 mt-1 animate-slide-up">
           <button
             onClick={onMarkLastSet}
-            className="w-full rounded-xl bg-amber-500/20 border border-amber-500/30 px-3 py-2 sm:px-4 sm:py-2.5 text-center transition-all active:scale-[0.98]"
+            className="w-full rounded-xl bg-amber-50 border border-amber-200 px-3 py-2 sm:px-4 sm:py-2.5 text-center transition-all active:scale-[0.98]"
           >
-            <span className="text-[11px] sm:text-xs font-bold text-amber-400">
-              ⏰ Time running low — Tap to mark as last set
+            <span className="text-[11px] sm:text-xs font-bold text-amber-700 inline-flex items-center gap-1">
+              <ClockIcon className="w-3.5 h-3.5" /> Time running low — Tap to mark as last set
             </span>
           </button>
         </div>
@@ -113,9 +114,9 @@ export function ScoreBoard({
 
       {/* Last Set Active Banner — hidden in rotation mode */}
       {!isRotation && game.isLastSet && !isMatchOver && (
-        <div className="mx-3 mt-1 rounded-xl bg-orange-500/10 border border-orange-500/20 px-3 py-1 sm:px-4 sm:py-1.5 text-center">
-          <span className="text-[10px] sm:text-[11px] font-bold text-orange-400 uppercase tracking-wider">
-            🏁 Final Set
+        <div className="mx-3 mt-1 rounded-xl bg-orange-50 border border-orange-200 px-3 py-1 sm:px-4 sm:py-1.5 text-center">
+          <span className="text-[10px] sm:text-[11px] font-bold text-orange-700 uppercase tracking-wider inline-flex items-center gap-1">
+            <FlagIcon className="w-3 h-3" /> Final Set
           </span>
         </div>
       )}
@@ -123,12 +124,12 @@ export function ScoreBoard({
       {/* Match Winner Overlay */}
       {isMatchOver && game.matchWinner && (
         <div className="flex flex-col items-center gap-1 py-1.5 sm:py-2 animate-scale-in">
-          <div className="rounded-2xl bg-yellow-400/90 px-4 py-1 sm:px-5 sm:py-1.5 text-center shadow-lg shadow-yellow-400/20">
-            <span className="text-sm sm:text-base font-black text-gray-900">
-              🏆 {game.teams[game.matchWinner].name} wins!
+          <div className="rounded-2xl bg-gray-900 px-4 py-1 sm:px-5 sm:py-1.5 text-center shadow-lg">
+            <span className="text-sm sm:text-base font-black text-white inline-flex items-center gap-1.5">
+              <TrophyIcon className="w-4 h-4" /> {game.teams[game.matchWinner].name} wins!
             </span>
           </div>
-          <p className="text-[10px] sm:text-xs text-white/50">
+          <p className="text-[10px] sm:text-xs text-gray-400">
             {game.sets
               .filter((s) => s.winner)
               .map((s) => `${s.left}-${s.right}`)

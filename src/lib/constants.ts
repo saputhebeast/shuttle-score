@@ -26,15 +26,15 @@ export const DEFAULT_TEAM_NAMES: Record<TeamSide, string> = {
 
 export const TEAM_COLORS: Record<TeamSide, { bg: string; text: string; accent: string; ring: string }> = {
   left: {
-    bg: "bg-blue-600",
+    bg: "bg-blue-500",
     text: "text-blue-600",
-    accent: "bg-blue-500",
+    accent: "bg-blue-50",
     ring: "ring-blue-400",
   },
   right: {
-    bg: "bg-red-600",
+    bg: "bg-red-500",
     text: "text-red-600",
-    accent: "bg-red-500",
+    accent: "bg-red-50",
     ring: "ring-red-400",
   },
 };

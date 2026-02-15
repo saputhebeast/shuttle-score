@@ -11,6 +11,7 @@ import { MatchHistory } from "@/components/match-history";
 import { SessionSummary } from "@/components/session-summary";
 import { PlayerAnalytics } from "@/components/player-analytics";
 import { TournamentBracket } from "@/components/tournament-bracket";
+import { ShuttlecockIcon } from "@/components/ui/icons";
 import { STORAGE_KEYS } from "@/lib/constants";
 import type { NewGameConfig, RotationSession } from "@/lib/types";
 
@@ -184,8 +185,8 @@ export default function Home() {
   // Wait for localStorage to hydrate before rendering to avoid SSR mismatch
   if (!isHydrated || !playersHydrated || !tournamentHydrated || !rotationHydrated) {
     return (
-      <div className="flex h-[100dvh] items-center justify-center bg-gray-900">
-        <div className="text-4xl animate-pulse">🏸</div>
+      <div className="flex h-[100dvh] items-center justify-center bg-[#F5F5F7]">
+        <ShuttlecockIcon className="w-10 h-10 text-gray-400 animate-pulse" />
       </div>
     );
   }
