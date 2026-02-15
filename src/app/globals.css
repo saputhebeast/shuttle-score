@@ -1,1 +1,169 @@
 @import "tailwindcss";
+
+/* ─── Base Resets ──────────────────────────────────────────────────────────── */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  box-sizing: border-box;
+}
+
+html {
+  overscroll-behavior: none;
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: #111827;
+  color: white;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Prevent text selection on tap targets ────────────────────────────────── */
+
+button,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+/* ─── Prevent zoom on iOS input focus ──────────────────────────────────────── */
+
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}
+
+/* ─── Smooth animations ───────────────────────────────────────────────────── */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* ─── Tabular numbers for score display ────────────────────────────────────── */
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Safe area padding for notched / Dynamic Island devices ───────────────── */
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ─── Landscape utilities ──────────────────────────────────────────────────── */
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .landscape-compact .score-panels {
+    flex-direction: row;
+    gap: 0.375rem;
+  }
+  
+  .landscape-compact .score-text {
+    font-size: clamp(2.5rem, 12vw, 5rem);
+  }
+  
+  .landscape-compact .header-section {
+    padding-top: 0.25rem;
+    padding-bottom: 0;
+  }
+}
+
+/* ─── Short screen helpers (iPhone SE, etc.) ───────────────────────────────── */
+
+@media (max-height: 667px) {
+  .short-screen-compact .score-text {
+    font-size: clamp(3rem, 15vw, 6rem);
+  }
+}
+
+/* ─── Scrollbar styling ────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+/* ─── Hide scrollbar but keep scrolling ────────────────────────────────────── */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Smooth scroll containers ─────────────────────────────────────────────── */
+
+.scroll-smooth {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}

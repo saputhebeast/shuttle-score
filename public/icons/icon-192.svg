@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="38" fill="#111827"/>
+  <!-- Shuttlecock head -->
+  <circle cx="96" cy="67.19999999999999" r="28.799999999999997" fill="#4ade80" opacity="0.9"/>
+  <!-- Feathers -->
+  <path d="M61.44 82.55999999999999 Q96 134.39999999999998 130.56 82.55999999999999" 
+        fill="none" stroke="#4ade80" stroke-width="5.76" opacity="0.7"/>
+  <path d="M72.96000000000001 90.23999999999998 Q96 140.16 119.03999999999999 90.23999999999998" 
+        fill="none" stroke="#4ade80" stroke-width="4.800000000000001" opacity="0.5"/>
+  <!-- Racket handle -->
+  <line x1="96" y1="115.19999999999999" x2="96" y2="153.6" 
+        stroke="#60a5fa" stroke-width="6.720000000000001" stroke-linecap="round"/>
+  <!-- Racket head -->
+  <ellipse cx="96" cy="163.2" rx="23.04" ry="28.799999999999997" 
+           fill="none" stroke="#60a5fa" stroke-width="5.76"/>
+  <!-- Score text -->
+  <text x="96" y="176.64000000000001" text-anchor="middle" font-family="system-ui,sans-serif" 
+        font-size="15.36" font-weight="800" fill="white" opacity="0.6">SCORE</text>
+</svg>

@@ -1,34 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏸 Shuttle Score — Badminton Score Tracker
+
+A fast, mobile-first badminton score tracker built with Next.js. Track scores, sets, serves, and match history — all from your phone's browser.
+
+## Features
+
+- **Tap to score** — Big, mobile-friendly tap targets
+- **Official rules** — 21 points, 2-point lead, 30-point cap
+- **Set tracking** — Best of 3 or Best of 5
+- **Serve indicator** — Always know who's serving
+- **Undo support** — Accidentally tapped? No problem
+- **Match point / Deuce alerts** — Visual indicators for critical moments
+- **Match history** — Review past matches
+- **PWA** — Add to home screen, works offline
+- **Wake Lock** — Screen stays on during the game
+- **Haptic feedback** — Feel each tap register
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Package Manager:** pnpm
+- **Hosting:** Vercel
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Run dev server
 pnpm dev
-# or
-bun dev
+
+# Build for production
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) on your phone (same Wi-Fi network) to start tracking.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-## Learn More
+1. Push this repo to GitHub
+2. Import the repo at [vercel.com/new](https://vercel.com/new)
+3. Vercel auto-detects Next.js — just click **Deploy**
+4. Share the URL with your team!
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── globals.css         # Global styles
+│   ├── layout.tsx          # Root layout with PWA meta
+│   └── page.tsx            # Main page (game orchestrator)
+├── components/
+│   ├── scoreboard/         # Scoreboard components
+│   │   ├── score-board.tsx # Main scoreboard container
+│   │   ├── team-score.tsx  # Individual team score panel
+│   │   ├── set-indicator.tsx # Set progress display
+│   │   └── game-controls.tsx # Undo, new game, timer
+│   ├── new-game-modal.tsx  # New game setup screen
+│   └── match-history.tsx   # Past matches display
+├── hooks/
+│   ├── use-game.ts         # Main game state hook
+│   ├── use-local-storage.ts # localStorage persistence
+│   └── use-wake-lock.ts    # Screen wake lock
+└── lib/
+    ├── types.ts            # TypeScript type definitions
+    ├── constants.ts        # Game rules & config
+    └── game-engine.ts      # Pure scoring logic
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Badminton Rules Implemented
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Rule | Implementation |
+|------|---------------|
+| Win a set | First to 21 points |
+| Deuce | Must lead by 2 points after 20-20 |
+| Score cap | First to 30 wins (no 2-point lead needed) |
+| Match | Best of 3 or Best of 5 sets |
+| Serve | Winner of the rally serves next |
